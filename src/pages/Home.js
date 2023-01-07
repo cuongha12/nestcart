@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+
 import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
-    // const user = useSelector(state => state.user)
-    let navigate = useNavigate()
-    const user = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : ''
-    useEffect(() => {
-    }, [user,navigate])
+    const user = useSelector(state => state?.auth?.login?.currentUser?.user?.name)
+    const [test, setTest] = useState(user === null || user === undefined ? "xxx" : user)
+    console.log(test);
+    console.log('====================================');
     return (
         <div>
-            {user ? (<div>{user.name}</div>) : (<div>{'chua co'}</div>)}
+            {/* {
+                !user === null ? (<div>{user}</div>) : (<div>{"chưa có"}</div>)
+            } */}
         </div>
 
     )

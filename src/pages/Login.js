@@ -2,31 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Button, Form, Input, Spin, useForm } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { authenticationUser } from '../redux/actions/user';
 import axios from 'axios';
+import { loginUser } from '../redux/apiRequest';
 
 const Login = () => {
     const [form] = Form.useForm();
-    const [loading, setLoading] = useState(false)
     let navigate = useNavigate()
     const dispatch = useDispatch()
     const onFinish = async (values) => {
         form.resetFields()
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            navigate('/');
-        }, 1000)
-        // dispatch(authenticationUser(values))
-        try {
-            const res = await axios.post('/auth', values)
-            localStorage.setItem('user', JSON.stringify(res.data.user))
-            localStorage.setItem('token', res.data.token)
-            navigate('/');
-            return res
-        } catch (error) {
-            console.log(error);
-        }
+        loginUser(values, dispatch, navigate)
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -85,7 +70,6 @@ const Login = () => {
                     </Button>
                 </Form.Item>
             </Form>
-            {loading && <Spin />}
         </div>
     )
 }
